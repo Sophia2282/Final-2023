@@ -41,7 +41,6 @@ public class Intake extends SubsystemBase {
   public void stopIntake() {
     LeftIntake.set(0);
     RightIntake.set(0);
-
   }
 
   @Override

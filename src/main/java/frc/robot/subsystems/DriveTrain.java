@@ -1,14 +1,3 @@
-package frc.robot.subsystems;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-//import com.ctre.phoenixpro.signals.InvertedValue;
-
-//import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-//import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import frc.robot.commands.tankDrive;
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -23,9 +12,18 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 //import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+//import frc.robot.commands.tankDrive;
+
+// import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+//import com.ctre.phoenixpro.signals.InvertedValue;
+//import edu.wpi.first.wpilibj.XboxController;
+// import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+// import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+//import edu.wpi.first.wpilibj2.command.CommandBase;
+// import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.commands.tankDrive;
 //import frc.robot.RobotContainer;
-import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
   WPI_TalonSRX leftA;
@@ -65,6 +63,12 @@ public class DriveTrain extends SubsystemBase {
 
   public void slowMode(double forward, double turn) {
     diffDrive.arcadeDrive(forward * 0.5, turn * 0.5);
+  }
+
+  // for autobalance
+  public void setSpeed(double speed) {
+    rightMotors.set(speed);
+    leftMotors.set(speed);
   }
 
   @Override

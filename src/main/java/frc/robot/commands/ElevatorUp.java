@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
+import frc.robot.Constants;
 
 public class ElevatorUp extends CommandBase {
   private final Elevator m_elevator;
@@ -31,9 +32,9 @@ public class ElevatorUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (elevatorUp.get()) {
+    if (elevatorUp.get()){ // && m_elevator.currentEncoderPosition > Constants.Encoder.ELEVATOR_HIGHEST_POSITION) { 
       m_elevator.ElevatorUp(0.75);
-    } else if (elevatorDown.get()) {
+    } else if (elevatorDown.get() && m_elevator.currentEncoderPosition < Constants.Encoder.ELEVATOR_LOWEST_POSITION) {
       m_elevator.ElevatorDown(0.65);
     } else {
       m_elevator.ElevatorStop();

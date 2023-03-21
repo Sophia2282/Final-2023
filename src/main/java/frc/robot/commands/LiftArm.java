@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import java.util.function.Supplier;
 
@@ -31,9 +32,9 @@ public class LiftArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (up.get()) {
+    if (up.get() && m_arm.currentEncoderPosition > Constants.Encoder.ARM_HIGHEST_POSITION) {
       m_arm.raise(-1.0);
-    } else if (down.get()) {
+    } else if (down.get() && m_arm.currentEncoderPosition < Constants.Encoder.ARM_LOWEST_POSITION) {
       m_arm.lower(1.0);
     } else {
       m_arm.armstop();
