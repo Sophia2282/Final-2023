@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -32,6 +33,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private DriveTrain autoDriveTrain = new DriveTrain();
+  private double time = 15;
   private final Intake m_intake = new Intake();
   private final Arm m_arm = new Arm();
   private final Elevator m_elevator = new Elevator();
@@ -59,7 +62,7 @@ public class RobotContainer {
     configureBindings();
     m_drive.setDefaultCommand(getarcadeDriveCommand());
 
-    // m_arm.setDefaultCommand(new LiftArm(m_arm, 0));
+    // m_arm.setDefaultCommand(new Lift(m_arm, 0));
 
     // m_intake.setDefaultCommand(new IntakeObject(m_intake, 0));
     // m_elevator.setDefaultCommand(new ElevatorUp(m_elevator, 0));
@@ -76,16 +79,19 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return new InstantCommand();
     return new SequentialCommandGroup(
-        new DriveTime(Speeds.DRIVE_SPEED, 3, m_drive));
 
-    // new DriveTrain(Speeds.DRIVE_SPEED, 2, m_drive);
-    // new LiftArm(m_arm, Speeds.ARM_SPEED).withTimeout(1),
-    // new DriveTrain(Speeds.DRIVE_SPEED, 2, m_drive),
-    // new LiftArm(m_arm, Speeds.ARM_SPEED).withTimeout(0.5),
-    // new ElevatorUp(m_elevator, Speeds.ELEVATOR_SPEED).withTimeout(0.7),
-    // new IntakeObject(m_intake, -0.80).withTimeout(1),
-    // new DriveTime(Speeds.DRIVE_SPEED, 2, m_drive));
-    // new LiftArm(m_arm, Speeds.ARM_SPEED).withTimeout(1);
+        new StartEndCommand(
+            () -> m_arm.setArmSpeed(Speeds.ARM_SPEED),
+            () -> m_arm.armstop(), m_arm).withTimeout(1),
+        new StartEndCommand(
+            () -> m_elevator.setElevatorSpeed(Speeds.ELEVATOR_SPEED),
+            () -> m_elevator.ElevatorStop(), m_elevator).withTimeout(1),
+        new StartEndCommand(
+            () -> m_intake.setIntakeSpeed(Speeds.INTAKE_SPEED * -1),
+            () -> m_intake.stopIntake(), m_intake).withTimeout(3),
+        new StartEndCommand(
+            () -> m_drive.setPower(Speeds.DRIVE_SPEED * -1),
+            () -> m_drive.stop(), m_drive).withTimeout(3));
   }
 
   // m_drive.setDefaultCommand(
