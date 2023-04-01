@@ -1,0 +1,55 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.commands;
+
+import com.kauailabs.navx.frc.AHRS;import edu.wpi.first.wpilibj2.command.Subsystem.
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DriveTrain;
+
+public class Balance extends CommandBase {
+  /** Creates a new Balance. */
+  private final PIDController m_mPidController = new PIDController(0.025, 0, 0);
+  private final DriveTrain m_driveTrain;
+  private final AHRS ahrs;
+
+  public Balance(DriveTrain m_driveTrain) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    DriveTrain m_drive = new DriveTrain();
+    addRequirements(m_drive);
+    m_mPidController.setTolerance(3.5); // find number omega find
+    // use?
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+
+  public void execute() {
+    double driveForce = m_mPidController.calculate(ahrs.getPitch(), 0);
+    m_driveTrain.arcadeDrive(driveForce, driveForce);
+
+  }
+
+  // Called once the command ends or is interrupted.
+
+  @Override
+  public void end(boolean interrupted) {
+    // DriveTrain(0,0,0 false);
+  }
+
+  // Returns true when the command should end.
+
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
+
+}
