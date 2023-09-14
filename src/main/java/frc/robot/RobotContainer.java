@@ -43,17 +43,17 @@ public class RobotContainer {
         public XboxController driverController = new XboxController(ControllerPorts.kDriverControllerPort);
         public Joystick subControllerJoystick = new Joystick(ControllerPorts.kJoystickPort);
 
-        public RobotContainer() {
+        public RobotContainer() {     //lift arm up and dowm
                 m_arm.setDefaultCommand(
                                 new LiftArm(m_arm, () -> subControllerJoystick.getRawButton(6),
                                                 () -> subControllerJoystick.getRawButton(4)));
 
-                m_intake.setDefaultCommand(
+                m_intake.setDefaultCommand( //intake in out and slow hold
                                 new IntakeObject(m_intake, () -> subControllerJoystick.getRawButton(3),
                                                 () -> subControllerJoystick.getRawButton(5),
                                                 () -> subControllerJoystick.getRawButton(2)));
 
-                m_elevator.setDefaultCommand(
+                m_elevator.setDefaultCommand( //elevator up and dowm
                                 new ElevatorUp(m_elevator, () -> subControllerJoystick.getRawButton(10),
                                                 () -> subControllerJoystick.getRawButton(8)));
 
@@ -103,10 +103,10 @@ public class RobotContainer {
         // m_drive.setDefaultCommand(
         // new slowMode(m_drive,() -> driverController.getRawButton(1));
 
-        public Command getarcadeDriveCommand() {
+        public Command getarcadeDriveCommand() {  //slow mode
                 return new ArcadeDrive(
                                 m_drive,
-                                () -> (-driverController.getRawAxis(1) * (driverController.getAButton() ? 0.7 : 1)),
+                                () -> (-driverController.getRawAxis(1) * (driverController.getAButton() ? 0.7 : 1)), 
                                 () -> (-driverController.getRawAxis(4) * (driverController.getAButton() ? 0.7 : 1)));
         }
 }
